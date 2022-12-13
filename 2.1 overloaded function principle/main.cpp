@@ -1,5 +1,5 @@
 #include <fast_io.h>
-
+#include <source_location>
 //函数重载机制
 /*
     函数重载机制涉及三个阶段：
@@ -11,17 +11,26 @@
 //考虑如下代码，采用哪个重载版本的feed?
 namespace animal{
     struct Cat{};
-    void feed(Cat* foo, int );
+    void feed(Cat* foo, int value){
+        println(std::source_location::current());
+    }
 };
 
-struct CatLike{CatLike(animal::Cat*);};
-void feed(CatLike);
+struct CatLike{CatLike(animal::Cat* );};
+void feed(CatLike c){
+    println(std::source_location::current());
+}
 
 template<typename T>
-void feed(T* obj, double);
+void feed(T* obj, double value){
+    println(std::source_location::current());
+}
 
 template<>
-void feed(animal::Cat* obj, double d); // 全特化版本
+void feed(animal::Cat* obj, double d)
+{
+    println(std::source_location::current());
+} // 全特化版本
 
 int main()
 {

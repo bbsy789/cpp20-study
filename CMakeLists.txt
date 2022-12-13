@@ -2,10 +2,45 @@ cmake_minimum_required(VERSION 3.21.0)
 project(cpp-study VERSION 0.1.0)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# 设置静态库文件目录
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+
+# 动态库文件目录
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+
+# 可执行文件目录
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 include(CTest)
 enable_testing()
+option(EB0.1 "Enable Building 0.1 Cross-compile" Off)
+option(EB1.4.4 "Enable Building 1.4.4 std::decltype" Off)
+option(EB1.4.5 "Enable Building 1.4.5 模板类型推导CTAD" Off)
+option(EB1.5 "Enable Building 1.5 函数对象" Off)
+option(EB2.1 "Enable Building 2.1 overloaded function principle" Off)
+option(EB2.3.1 "Enable Building 2.1 overloaded function principle" Off)
+option(EB2.1.5 "Enable Building 2.1.5 SFINAE" Off)
+if(EB0.1)
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/0.1cross-compile")
+endif()
+if(EB1.4.4)
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/1.4.4 std::decltype")
+endif()
+if(EB1.4.5)
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/1.4.5 模板类型推导CTAD")
+endif()
+if(EB1.5)
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/1.5 函数对象")
+endif()
+if(EB2.1)
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/2.1 overloaded function principle")
+endif()
+if(EB2.3.1)
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/2.3.1\ Visitor\ Pattern")
+endif()
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/2.1\ overloaded\ function\ principle)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/2.3.1\ Visitor\ Pattern)
-
+if(EB2.1.5)
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/2.1.5 SFINAE")
+endif()
