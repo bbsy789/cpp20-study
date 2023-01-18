@@ -1,17 +1,17 @@
 cmake_minimum_required(VERSION 3.21.0)
-project(cpp-study VERSION 0.1.0)
+project(cpp-study)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # 设置静态库文件目录
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 
 # 动态库文件目录
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 
 # 可执行文件目录
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
 include(CTest)
 enable_testing()
@@ -24,6 +24,7 @@ option(EB2.3.1 "Enable Building 2.1 overloaded function principle" Off)
 option(EB2.1.5 "Enable Building 2.1.5 SFINAE" Off)
 option(EB5.3 "Enable Building 5.3 TypeLIst" Off)
 option(EB5.4 "Enable Building 5.4 example" Off)
+option(EB6.1 "Enable Building 6.1 constexpr变量" Off)
 if(EB0.1)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/0.1cross-compile")
 endif()
@@ -53,4 +54,7 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/5.3 TypeList")
 endif()
 if(EB5.4)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/5.4 Example")
+endif()
+if(EB6.1)
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/6.1 constexpr变量")
 endif()
