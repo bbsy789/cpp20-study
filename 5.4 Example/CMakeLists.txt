@@ -2,12 +2,14 @@ include(CheckIPOSupported)
 check_ipo_supported(RESULT supported OUTPUT error)
 set(CMAKE_CXX_FLAGS_DEBUG )
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -Ofast -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-rtti")
-target_include_directories(main1_4_5 PUBLIC /home/wwj/source-code/fast_io/include/)
+
+add_executable(main5_4_1 FindShortestPath.cpp)
+add_executable(main5_4_2 DataTable.cpp)
 
 if(supported)
     message(STATUS "IPO/LTO enabled")
-    set_property(TARGET main1_4_5 PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+    set_property(TARGET main5_4_1 PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+    set_property(TARGET main5_4_2 PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
 else()
     message(STATUS "IPO/LTO not supported: <${error}>")
 endif()
-
