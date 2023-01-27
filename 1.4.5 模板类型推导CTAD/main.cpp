@@ -37,8 +37,14 @@ std::pair bar4{1,2.9};
 
 template<typename T,typename U>
 struct Pair{
-    Pair();
-    Pair(T,U);
+    Pair()
+    {
+        println("Pair construct!");
+    }
+    Pair(T t,U u)
+    {
+        println("Pair construct! t = ",t," u = ",u,"\n");
+    }
     // ...
 };
 Pair foo5{1,2};//编译器能自动推导出Pair<int,int>
