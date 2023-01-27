@@ -1,6 +1,6 @@
-#include<cmath>
-#include<vector>
-
+#include <cmath>
+#include <vector>
+#include <fast_io.h>
 //C++17新特性 模板类型推导
 //Class Template Argument Deduction，缩写为CTAD
 /*
