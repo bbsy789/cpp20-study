@@ -8,7 +8,7 @@
 
 constexpr auto add = [](auto a, auto b){
     return a + b;
-}
+};
 
 int main()
 {
