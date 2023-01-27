@@ -12,6 +12,6 @@ constexpr auto add = [](auto a, auto b){
 
 int main()
 {
-    println("1+2=",add(1+2));
+    println("1+2=",add(1,2));
     return 0;
 }
