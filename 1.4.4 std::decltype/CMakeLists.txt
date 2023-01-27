@@ -13,6 +13,6 @@ if(supported)
 else()
     message(STATUS "IPO/LTO not supported: <${error}>")
 endif()
-add_test(NAME first COMMAD main1_4_4)
+add_test(NAME first COMMAND main1_4_4)
 
 

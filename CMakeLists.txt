@@ -53,7 +53,7 @@ macro(CHECK_DIR_HAS_CMAKELIST hascmakelist targetdir)
         message(FATAL_ERROR "Invalid dir para: targetdir = ${targetdir}")
     endif()
 endmacro()
- 
+
 # 为含有CMakeList的子目录添加add_subdirectory调用
 # 自动识别调用处所在目录有哪些子目录，并为还有CMakeLists.txt的子目录添加add_sundirectory调用
 macro(ADD_SUBDIRECTORY_MACRO)
