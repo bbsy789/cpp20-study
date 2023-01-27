@@ -81,8 +81,8 @@ ADD_SUBDIRECTORY_MACRO()
 #     endforeach()
 # endmacro()
 
-add_test(NAME first COMMAD ${TARGET_FILE:main1_4_4})
-add_test(NAME second COMMAD ${TARGET_FILE:main1_4_4_2})
-add_test(NAME third COMMAD ${TARGET_FILE:main1_4_5})
-add_test(NAME fourth COMMAD ${TARGET_FILE:main2_1})
-add_test(NAME fifth COMMAD ${TARGET_FILE:main2_1_5})
+
+# add_test(NAME second COMMAD ${TARGET_FILE:main1_4_4_2})
+# add_test(NAME third COMMAD ${TARGET_FILE:main1_4_5})
+# add_test(NAME fourth COMMAD ${TARGET_FILE:main2_1})
+# add_test(NAME fifth COMMAD ${TARGET_FILE:main2_1_5})
