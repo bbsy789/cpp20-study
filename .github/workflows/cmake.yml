@@ -18,16 +18,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Debug1 PWD
-      run: 
-        pwd 
-    - name: Debug2 ls-l
-      run:
-        ls -al
-    - name: Configure CMake
+    - uses: actions/checkout@v3
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+    - name: Setup Ninja
+        # You may pin to the exact commit or the version.
+        # uses: ashutoshvarma/setup-ninja@93f8b9763516f1fb9b4d9840b12d844bee17791f
+      uses: ashutoshvarma/setup-ninja@v1.1
+      with:
+        # Ninja version. Make sure given ninja version exists in ninja github release
+        version: 1.11.0 # default is 1.10.0
+        # Folder where ninja binary will be downloaded
+        dest: ninja # optional, default is ninja_bin
+        # Override default platform detection logic. Accepted values are [mac, linux, win]
+        platform: linux # optional
+    - name: ConfigureCMake 
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -GNinja
 
     - name: Build
       # Build your program with the given configuration
