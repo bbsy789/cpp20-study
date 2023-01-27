@@ -73,11 +73,16 @@ macro(ADD_SUBDIRECTORY_MACRO)
 endmacro()
 
 ADD_SUBDIRECTORY_MACRO()
-# # 为含有CMakeLists的子目录添加测试
+# 为含有CMakeLists的子目录添加测试
 # macro(ADD_TEST_MACRO)
 #     message(STATUS "macro add_test subdir = ${subdir}")
 #     foreach(exec ${subdir})
-#         me
+#         add_test(NAME exec COMMAND $<TARGET_FILE:my_test>)
 #     endforeach()
 # endmacro()
 
+add_test(NAME first COMMAD ${TARGET_FILE:main1_4_4})
+add_test(NAME second COMMAD ${TARGET_FILE:main1_4_4_2})
+add_test(NAME third COMMAD ${TARGET_FILE:main1_4_5})
+add_test(NAME fourth COMMAD ${TARGET_FILE:main2_1})
+add_test(NAME fifth COMMAD ${TARGET_FILE:main2_1_5})
