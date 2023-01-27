@@ -10,7 +10,7 @@ std::function<int(int,int)> OperationFactory(Op op){
 
 int main()
 {
-    println("2+3=",OperationFactory(Op::ADD)(2,3).'\n');
-    println("2*3=",OperationFactory(Op::MUL)(2,3),'\n');
+    println("2+3=",OperationFactory(Op::ADD)(2,3)."\n");
+    println("2*3=",OperationFactory(Op::MUL)(2,3),"\n");
     return 0;
 }
