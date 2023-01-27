@@ -14,13 +14,13 @@ double bar = std::max<double>(1, 2.9); // #2,指明模板参数，因为两个�
     然而在我们使用模板类时，都必须指明模板类的模板参数后才能使用。
 */
 std::vector<int> foo2{1,2,3,4};
-std::pair<int, double> bar{1, 2.0};
+std::pair<int, double> bar2{1, 2.0};
 /*
     初始化一个序对类型时，我们明显可以通过构造传递的两个值的类型得到pair<int，double>,
     但是在C++17之前，尽管编译器知道这些类型，仍需显式指明模板类的模板参数。标准库也
     发现了这一点，提供了一些辅助模板来解决这个问题
 */
-auto bar2 = std::make_pair(1,2.9);
+auto bar3 = std::make_pair(1,2.9);
 /*
     make_pair是一个模板函数，可以自动推导出函数的两个参数类型。
     从而构造出最终的序对类型，对程序员来说，每写一个模板类都需要考虑封装一个辅助函数来构造
@@ -33,7 +33,7 @@ auto bar2 = std::make_pair(1,2.9);
     通过改写前面的代码可以看到明显的区别，改写后的代码更精简。
 */
 std::vector foo3{1,2,3,4};
-std::pair bar3{1,2.9};
+std::pair bar4{1,2.9};
 
 template<typename T,typename U>
 struct Pair{
@@ -41,7 +41,7 @@ struct Pair{
     Pair(T,U);
     // ...
 };
-Pair foo4{1,2};//编译器能自动推导出Pair<int,int>
+Pair foo5{1,2};//编译器能自动推导出Pair<int,int>
 
 // template<typename T,typename U>
 // struct Pair2{
@@ -56,11 +56,11 @@ Pair foo4{1,2};//编译器能自动推导出Pair<int,int>
 template<typename T ,typename U>
 struct Pair3{
     template<typename A,typename B>
-    Pair3(A&&, &&);
+    Pair3(A&&, B&&);
 
-    template<typename T,typename U>
-    Pair3(T,U) -> Pair3<T,U>;  
 };
+template<typename T,typename U>
+Pair3(T,U) -> Pair3<T,U>;
 
 // 在做模板参数推导时，推导规则拥有很高的优先级，编译器会优先考虑推到规则，之后才考虑通过构造函数来推导。
 // 上述规则相当于告诉编译器，当通过诸如Pair(T,U)的方式构造程序时，自行推导出模板类Pair<T,U>。
@@ -76,7 +76,7 @@ struct Pair3{
     需要显式指明模板参数，而在C++17之后提供的CTAD特性可以简化这一点，同时提供自定义推导规则以帮助编译器推导正确的类型。
 */
 
-int main()
-{
-    return 0;
-}
+// int main()
+// {
+//     return 0;
+// }
