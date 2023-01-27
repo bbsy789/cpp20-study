@@ -21,7 +21,7 @@
 //2.相关建议也在不断产生
 #include <numbers>
 #include <numeric>
-#include <iostream>
+#include <fast_io.h>
 
 namespace wwj{
 //2.constexpr与const的区别主要有：
@@ -65,6 +65,7 @@ int main()
     //1.使用constexpr定义的常量通常可以代替使用宏定义的常量，并且能够保证类型安全
     constexpr double PI = std::numbers::pi_v<double>;
     constexpr double R_ = 2.0;
-    std::cout << Area<R_>() << "\n" << Area(R_) << std::endl; // 2 * 2 * 3.14 = 12.56
+    //std::cout << Area<R_>() << "\n" << Area(R_) << std::endl; // 2 * 2 * 3.14 = 12.56
+    print(Area<R_>(),"\n",Area(R_));
     return 0;
 }

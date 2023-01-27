@@ -5,7 +5,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -Ofast -fno-exceptions -fno-unwi
 
 add_executable(main6_1 constexpr.cpp)
 
-target_include_directories(main6_1 PUBLIC /home/wwj/source-code/fast_io/include)
+target_include_directories(main6_1 PUBLIC ${CMAKE_SOURCE_DIR}/fast_io/include/)
 
 if(supported)
     message(STATUS "IPO/LTO enabled")

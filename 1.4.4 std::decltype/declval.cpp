@@ -27,6 +27,6 @@ int main()
     */
 
    //但是编译错误不明确，可以添加更友好的错误信息。
-   declval<AFunctionObj>();
+   //declval<AFunctionObj>();
 
 }
