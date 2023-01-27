@@ -1,8 +1,20 @@
+/*************************************************************************
+    > File Name: TypeCalculation.cpp
+    > Author: Netcan
+    > Blog: https://netcan.github.io/
+    > Mail: netcan1996@gmail.com
+    > Created Time: 2021-11-11 23:01
+************************************************************************/
 #include "TypeList.hpp"
-#include <fast_io.h>
 
+using In = TypeList<int, char, long, char, short, float, double>;
 
-int main()
-{
+template<typename E>
+using TypeSizeLess4 = bool_constant<sizeof(E) < 4>;
+using Res = Unique_t<Map_t<Filter_t<In, TypeSizeLess4>, add_pointer>>::to<variant>;
+static_assert(is_same_v<Res, variant<char*, short*>>);
+
+int main(int argc, char** argv) {
+
     return 0;
 }
