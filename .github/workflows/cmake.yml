@@ -65,7 +65,7 @@ jobs:
         cd ${{github.workspace}} 
     - name: build binutils
       run: |
-        cd ${{github.workspace}}/binutils/build
+        cd ${{github.workspace}}/binutils-gdb/build
         make all-install -j
         cd ${{github.workspace}} 
     - name: configure && build gcc
@@ -73,7 +73,7 @@ jobs:
         cd ${{github.workspace}}/gcc
         mkdir -v build
         cd build
-        ../configure --prefix=${{github.workspace}}/toolchains/gcc --disable-nls --disable-werror --disable-bootstrap --with-gmp=${{github.workspace}}/toolchains/gcc --with-mpc=${{github.workspace}}/toolchains/gcc --with-mpfr=${{github.workspace}}/toolchains/gcc --enable-languages=c,c++ --disable-multilib
+        ../configure --prefix=${{github.workspace}}/toolchains/gcc --disable-nls --disable-werror --disable-bootstrap --with-gmp=${{github.workspace}}/toolchains/gcc --with-mpc=${{github.workspace}}/toolchains/gcc --with-mpfr=${{github.workspace}}/toolchains/gcc --with-isl=${{github.workspace}}/toolchains/gcc --enable-languages=c,c++ --disable-multilib
         make -j
         make install-strip -j
         cd ${{github.workspace}} 
