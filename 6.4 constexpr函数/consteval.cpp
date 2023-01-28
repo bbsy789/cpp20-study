@@ -1,4 +1,5 @@
 #include <numeric>
+#include <initializer_list>
 #undef min
 //使用constexpr修饰仅表达一个函数是否可能被编译时求值，而使用consteval修饰则必须能编译时求值
 consteval int min(std::initializer_list<int> xs)
