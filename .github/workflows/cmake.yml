@@ -22,18 +22,7 @@ jobs:
     - name: Install Clang
       # You may pin to the exact commit or the version.
       # uses: egor-tensin/setup-clang@ef434b41eb33a70396fb336b1bae39c76d740c3d
-      uses: egor-tensin/setup-clang@v1
-      with:
-        # Version to install
-        version: latest# optional, default is latest
-        # Target platform
-        platform: x64 # optional, default is x64
-        # Install Cygwin packages
-        cygwin: 0 # optional, default is 0
-        # Set up cc/clang/c++/clang++ executables
-        cc: 1 # optional, default is 1
-        # On Cygwin, replace executable symlinks with hardlinks
-        hardlinks: 0 # optional, default is 0
+      uses: egor-tensin/setup-clang@v1.4
     - name: Setup GCC
       # You may pin to the exact commit or the version.
       # uses: Dup4/actions-setup-gcc@3e3b2ff18c6df33588500e965fa0d2507aeb4429
