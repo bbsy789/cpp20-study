@@ -45,6 +45,7 @@ jobs:
         make all-install -j
         cd ${{github.workspace}} 
     - name: configure && build gcc
+      run: |
         cd ${{github.workspace}}/gcc
         mkdir -v build
         cd build
