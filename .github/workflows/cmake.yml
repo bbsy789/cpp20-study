@@ -23,17 +23,29 @@ jobs:
       run: git clone https://github.com/bminor/binutils-gdb.git --depth=1
     - name: clone gcc
       run: git clone https://github.com/gcc-mirror/gcc.git --depth=1
-    - name: configure&&build binutils
+    - name: configure binutils
       run: |
         cd binutils-gdb
         mkdir -v build
         cd build
         ../configure --prefix=${{github.workspace}}/toolchains/gcc --disable-nls --disable-werror
-        make all-install -j
         cd ${{github.workspace}} 
-    - name: configure&&build gcc
+    - name: install gmp
       run: |
         cd gcc
+        ./contrib/download_prerequisites
+        tar -xvf gmp-6.2.1.tar.bz2
+        cd gmp-6.2.1
+        ./configure
+        make -j
+        make install -j
+    - name: build binutils
+      run: |
+        cd ${{github.workspace}}/binutils/build
+        make all-install -j
+        cd ${{github.workspace}} 
+    - name: configure && build gcc
+        cd ${{github.workspace}}/gcc
         mkdir -v build
         cd build
         ../configure --prefix=${{github.workspace}}/toolchains/gcc --disable-nls --disable-werror --disable-bootstrap --enable-languages=c,c++ --disable-multilib
