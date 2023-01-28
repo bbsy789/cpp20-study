@@ -110,13 +110,14 @@ jobs:
         dest: ninja # optional, default is ninja_bin
         # Override default platform detection logic. Accepted values are [mac, linux, win]
         platform: linux # optional
-    - name: Clean
-      run: rm -rf build
-    - name: ConfigureCMakeForClang
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
-    - name: Clang-Build
+    - name: ConfigureCMakeForGCC
+      run: |
+        export PATH=${{github.workspace}}/toolchains/gcc/bin:$PATH
+        export LD_LIBRARY_PATH=${{github.workspace}}/toolchains/gcc/lib
+        cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=$c{{env.BUILD_TYPE}} -GNinja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
+    - name: GCC-Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-    - name: Clang-Test
+    - name: GCC-Test
       working-directory: ${{github.workspace}}/build
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
