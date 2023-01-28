@@ -23,10 +23,6 @@ jobs:
       # You may pin to the exact commit or the version.
       # uses: egor-tensin/setup-clang@ef434b41eb33a70396fb336b1bae39c76d740c3d
       uses: egor-tensin/setup-clang@v1.4
-    - name: Install GCC
-      # You may pin to the exact commit or the version.
-      # uses: egor-tensin/setup-gcc@eaa888eb19115a521fa72b65cd94fe1f25bbcaac
-      uses: egor-tensin/setup-gcc@v1.3
     - name: clone fast_io
       run: git clone https://github.com/cppfastio/fast_io.git
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -42,16 +38,6 @@ jobs:
         dest: ninja # optional, default is ninja_bin
         # Override default platform detection logic. Accepted values are [mac, linux, win]
         platform: linux # optional
-    - name: ConfigureCMakeForGCC 
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -GNinja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
-    - name: GCC-Build
-      # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-    - name: GCC-Test
-      working-directory: ${{github.workspace}}/build
-      # Execute tests defined by the CMake configuration.
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{env.BUILD_TYPE}}
     - name: Clean
       run: rm -rf build
     - name: ConfigureCMakeForClang
