@@ -19,14 +19,30 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
-    - name: Install Clang
-      # You may pin to the exact commit or the version.
-      # uses: egor-tensin/setup-clang@ef434b41eb33a70396fb336b1bae39c76d740c3d
-      uses: egor-tensin/setup-clang@v1.4
+    - name: clone binutils
+      run: git clone https://github.com/bminor/binutils-gdb.git --depth=1
+    - name: clone gcc
+      run: git clone https://github.com/gcc-mirror/gcc.git --depth=1
+    - name: configure&&build binutils
+      run: cd binutils-gdb && mkdir -v build && cd build && ../configure --prefix=${{github.workspace}/toolchains/gcc} --disable-nls --disable-werror && make all-install -j && cd ${{github.worspace}}
+    - name: configure&&build gcc
+      run: cd gcc && mkdir -v build && cd build && ../configure --prefix=${{github.workspace}/toolchains/gcc} --disable-nls --disable-werror --disable-bootstrap --enable-languages=c,c++ --disable-multilib -build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu && make -j && make install -j && cd ${{github.worspace}} 
     - name: clone fast_io
       run: git clone https://github.com/cppfastio/fast_io.git
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+    - name: tar gcc
+      run: tar cvf gcc.tar ${{github.workspace}/toolchains/gcc}
+    - name: xz gcc
+      run: xz -z gcc.tar
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.2
+      with:
+        # Artifact name
+        name: gcc # optional, default is artifact
+        # A file, directory or wildcard pattern that describes what to upload
+        path: gcc.tar.xz
+        # The desired behavior if no files are found using the provided path.
     - name: Setup Ninja
         # You may pin to the exact commit or the version.
         # uses: ashutoshvarma/setup-ninja@93f8b9763516f1fb9b4d9840b12d844bee17791f
