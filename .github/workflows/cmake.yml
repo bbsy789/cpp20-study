@@ -66,7 +66,8 @@ jobs:
     - name: build binutils
       run: |
         cd ${{github.workspace}}/binutils-gdb/build
-        make all-install -j
+        make -j
+        make install-strip -j
         cd ${{github.workspace}} 
     - name: configure && build gcc
       run: |
