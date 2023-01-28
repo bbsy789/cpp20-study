@@ -5,6 +5,7 @@
 //pack是参数包
 //op是运算符
 //[op init / init op]是可选初值
+using std::size_t;
 template<size_t ...Is> // 右折叠
 constexpr int rsum = (Is + ... + 0);
 //(1+ (2 + (3 + (4 + (5 + 0)))))
