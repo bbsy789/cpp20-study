@@ -24,25 +24,43 @@ jobs:
     - name: clone gcc
       run: git clone https://github.com/gcc-mirror/gcc.git --depth=1
     - name: configure&&build binutils
-      run: cd binutils-gdb && mkdir -v build && cd build && ../configure --prefix=${{github.workspace}/toolchains/gcc} --disable-nls --disable-werror && make all-install -j && cd ${{github.worspace}}
+      run: |
+        cd binutils-gdb
+        mkdir -v build
+        cd build
+        ../configure --prefix=${{github.workspace}}/toolchains/gcc --disable-nls --disable-werror
+        make all-install -j
+        cd ${{github.workspace}} 
     - name: configure&&build gcc
-      run: cd gcc && mkdir -v build && cd build && ../configure --prefix=${{github.workspace}/toolchains/gcc} --disable-nls --disable-werror --disable-bootstrap --enable-languages=c,c++ --disable-multilib -build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu && make -j && make install -j && cd ${{github.worspace}} 
+      run: |
+        cd gcc
+        mkdir -v build
+        cd build
+        ../configure --prefix=${{github.workspace}}/toolchains/gcc --disable-nls --disable-werror --disable-bootstrap --enable-languages=c,c++ --disable-multilib
+        make -j
+        make install -j
+        cd ${{github.workspace}} 
+    - name: release gcc
+      run: |
+        mkdir -v release
+        tar -czvf ./release/gcc-latest.tar.gz ${{github.workspace}}/toolchains/gcc
+    - name: Simple Upload to Release
+      # You may pin to the exact commit or the version.
+      # uses: Guerra24/upload-to-release@933304c241627d9260fc449fa504becb04f365a3
+      uses: Guerra24/upload-to-release@v1.0.0
+      with:
+        # Artifact name
+        name: gcc-ubuntu-latest
+        # Path to the file to upload
+        path: ./release/gcc-latest.tar.gz
+        # Content type for the file
+        content-type: toolchains/gcc # optional, default is application/octet-stream
+        # secrets.GITHUB_TOKEN
+        repo-token: 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
     - name: clone fast_io
       run: git clone https://github.com/cppfastio/fast_io.git
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-    - name: tar gcc
-      run: tar cvf gcc.tar ${{github.workspace}/toolchains/gcc}
-    - name: xz gcc
-      run: xz -z gcc.tar
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3.1.2
-      with:
-        # Artifact name
-        name: gcc # optional, default is artifact
-        # A file, directory or wildcard pattern that describes what to upload
-        path: gcc.tar.xz
-        # The desired behavior if no files are found using the provided path.
     - name: Setup Ninja
         # You may pin to the exact commit or the version.
         # uses: ashutoshvarma/setup-ninja@93f8b9763516f1fb9b4d9840b12d844bee17791f
