@@ -24,6 +24,23 @@ ValueList<'C',0,2L,nullptr,Foo{}> x; // OK
 //因此不可以简单地使用const char *来作为模板参数。
 static const char hello[] = "hello";
 static_assert(std::is_same_v<hello>,C<hello>>);//OK
+
+//使用自定义字面类型来替代上述过程，完成封装
+template<size_t N>
+class Fixedstr{
+    char str[N];
+    constexpr Fixedstr(const char (&s)[N]){std::copy_n(s,N,str)};
+};
+template<Fixedstr str>
+struct D{
+    static constexpr auto ptr = &str;
+};
+template<Fixedstr str>
+struct D2{
+    static constexpr auto ptr = &str;
+};
+static_assert(!is_same_v<D<"hello">,D2<"hello">>);//不同类型
+static_assert(D<"hello">::ptr == D2<"hello">::ptr);//但同一个字面对象
 int main()
 {
 
