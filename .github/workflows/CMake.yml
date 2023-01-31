@@ -19,10 +19,90 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
-    - name: Install Clang
+    - name: clone binutils
+      run: git clone https://github.com/bminor/binutils-gdb.git --depth=1
+    - name: clone gcc
+      run: git clone https://github.com/gcc-mirror/gcc.git --depth=1
+    - name: install gmp
+      run: |
+        cd ${{github.workspace}}/gcc
+        ./contrib/download_prerequisites
+        tar -xvf gmp-6.2.1.tar.bz2
+        cd gmp-6.2.1
+        ./configure --prefix=${{github.workspace}}/toolchains/gcc
+        make -j${nproc}
+        make install -j${nproc}
+    - name: install mpfr
+      run: |
+        cd ${{github.workspace}}/gcc
+        tar -xvf mpfr-4.1.0.tar.bz2
+        cd mpfr-4.1.0
+        ./configure --prefix=${{github.workspace}}/toolchains/gcc --with-gmp=${{github.workspace}}/toolchains/gcc
+        make -j${nproc}
+        make install -j${nproc}
+    - name: install mpc
+      run: |
+        cd ${{github.workspace}}/gcc
+        tar -xvf mpc-1.2.1.tar.gz
+        cd mpc-1.2.1
+        ./configure --prefix=${{github.workspace}}/toolchains/gcc --with-gmp=${{github.workspace}}/toolchains/gcc --with-mpfr=${{github.workspace}}/toolchains/gcc
+        make -j${nproc}
+        make install -j${nproc}
+    - name: install isl
+      run: |
+        cd ${{github.workspace}}/gcc
+        tar -xvf isl-0.24.tar.bz2
+        cd isl-0.24 
+        ./configure --prefix=${{github.workspace}}/toolchains/gcc --with-gmp=${{github.workspace}}/toolchains/gcc --with-mpc=${{github.workspace}}/toolchains/gcc --with-mpfr=${{github.workspace}}/toolchains/gcc
+        make -j${nproc}
+        make install -j${nproc}
+    - name: clean
+      run: |
+        cd ${{github.workspace}}/gcc
+        rm -rf gmp-6.2.1 mpfr-4.1.0 mpc-1.2.1 isl-0.24
+    - name: configure binutils
+      run: |
+        cd ${{github.workspace}}/binutils-gdb
+        mkdir -v build
+        cd build
+        ../configure --prefix=${{github.workspace}}/toolchains/gcc --disable-nls --disable-werror --with-gmp=${{github.workspace}}/toolchains/gcc --with-mpc=${{github.workspace}}/toolchains/gcc --with-mpfr=${{github.workspace}}/toolchains/gcc
+        cd ${{github.workspace}} 
+    - name: build &&install binutils
+      run: |
+        cd ${{github.workspace}}/binutils-gdb/build
+        make -j${nproc}
+        make install-strip -j${nproc}
+        cd ${{github.workspace}}
+    - name: clean
+      run: |
+        cd ${{github.workspace}}
+        rm -rf binutils-gdb/build
+    - name: configure && build gcc
+      run: |
+        cd ${{github.workspace}}/gcc
+        mkdir -v build
+        cd build
+        ../configure --prefix=${{github.workspace}}/toolchains/gcc --disable-nls --disable-werror --disable-bootstrap --with-gmp=${{github.workspace}}/toolchains/gcc --with-mpc=${{github.workspace}}/toolchains/gcc --with-mpfr=${{github.workspace}}/toolchains/gcc --with-isl=${{github.workspace}}/toolchains/gcc --enable-languages=c,c++ --disable-multilib
+        make -j${nproc}
+        make install-strip -j${nproc}
+        cd ${{github.workspace}} 
+    - name: release gcc
+      run: |
+        mkdir -v release
+        tar -czvf ./release/gcc-latest.tar.gz ${{github.workspace}}/toolchains/gcc
+    - name: Simple Upload to Release
       # You may pin to the exact commit or the version.
-      # uses: egor-tensin/setup-clang@ef434b41eb33a70396fb336b1bae39c76d740c3d
-      uses: egor-tensin/setup-clang@v1.4
+      # uses: Guerra24/upload-to-release@933304c241627d9260fc449fa504becb04f365a3
+      uses: Guerra24/upload-to-release@v1.0.0
+      with:
+        # Artifact name
+        name: gcc-ubuntu-latest
+        # Path to the file to upload
+        path: ./release/gcc-latest.tar.gz
+        # Content type for the file
+        content-type: toolchains/gcc # optional, default is application/octet-stream
+        # secrets.GITHUB_TOKEN
+        repo-token: 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
     - name: clone fast_io
       run: git clone https://github.com/cppfastio/fast_io.git
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -38,13 +118,14 @@ jobs:
         dest: ninja # optional, default is ninja_bin
         # Override default platform detection logic. Accepted values are [mac, linux, win]
         platform: linux # optional
-    - name: Clean
-      run: rm -rf build
-    - name: ConfigureCMakeForClang
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
-    - name: Clang-Build
+    - name: ConfigureCMakeForGCC
+      run: |
+        export PATH=${{github.workspace}}/toolchains/gcc/bin:$PATH
+        export LD_LIBRARY_PATH=${{github.workspace}}/toolchains/gcc/lib
+        cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=$c{{env.BUILD_TYPE}} -GNinja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
+    - name: GCC-Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-    - name: Clang-Test
+    - name: GCC-Test
       working-directory: ${{github.workspace}}/build
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
