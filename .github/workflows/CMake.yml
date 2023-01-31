@@ -120,9 +120,7 @@ jobs:
         platform: linux # optional
     - name: ConfigureCMakeForGCC
       run: |
-        export PATH=${{github.workspace}}/toolchains/gcc/bin:$PATH
-        export LD_LIBRARY_PATH=${{github.workspace}}/toolchains/gcc/lib
-        cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=$c{{env.BUILD_TYPE}} -GNinja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
+        cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=$c{{env.BUILD_TYPE}} -GNinja
     - name: GCC-Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
     - name: GCC-Test
